@@ -1,3 +1,4 @@
+import os
 import gradio as gr
 import modules.scripts as scripts
 from modules.upscaler import Upscaler, UpscalerData
@@ -18,9 +19,8 @@ import os
 
 
 def get_models():
+    models_path = os.path.join(scripts.basedir(), "models" + os.path.sep + "roop" + os.path.sep + "*")
     models = glob.glob(models_path)
-    models_path = os.path.join(scripts.basedir(), "models/roop/*")
-    models += glob.glob(models_path)
     models = [x for x in models if x.endswith(".onnx") or x.endswith(".pth")]
     return models
 
@@ -173,7 +173,7 @@ class FaceSwapScript(scripts.Script):
             else:
                 logger.error(f"Please provide a source face")
 
-    def postprocess_batch(self, p, *args, **kwargs):
+    def postprocess_batch(self, *args, **kwargs):
         if self.enable:
             return images
 
